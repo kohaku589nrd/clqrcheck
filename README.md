@@ -25,7 +25,7 @@ Inventory/
 │   ├── database.py          # Conexión SQLite
 │   ├── models.py            # Tablas: equipos, usuarios, ubicaciones, sesion_activa, historial_uso
 │   ├── schemas.py           # Validación con Pydantic
-│   ├── qr_utils.py          # Generación de códigos QR (basado en LiveInventory.py)
+│   ├── qr_utils.py          # Generación de códigos QR
 │   ├── fotos/               # Imágenes de equipos subidas por el usuario
 │   └── routes/
 │       ├── equipos.py       # CRUD equipos + subir foto + generar QR
@@ -44,7 +44,6 @@ Inventory/
 │       │   ├── QRReader.jsx      # Componente de cámara + decodificación QR
 │       │   └── EstadoSesion.jsx  # Panel lateral con estado actual
 │       └── api.js                # Cliente HTTP hacia el backend
-├── LiveInventory.py         # Script original (generación manual de QR)
 ├── start_backend.bat        # Arranca el backend
 ├── start_frontend.bat       # Arranca el frontend
 └── inventory.db             # Base de datos SQLite (se crea automáticamente)
@@ -139,7 +138,7 @@ Los QR contienen un JSON con el campo `type` que identifica la entidad:
 
 ```json
 { "type": "equipment", "Codigo": "000001", "nombre": "Ludlum 26-1", ... }
-{ "type": "user",      "Codigo": "USR-001", "nombre": "Sebastian Sepulveda" }
+{ "type": "user",      "Codigo": "USR-001", "nombre": "Nombre Apellido" }
 { "type": "location",  "Codigo": "LAAN-001", "Instalacion": "LAAN" }
 { "type": "master" }
 ```

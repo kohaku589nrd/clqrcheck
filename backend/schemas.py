@@ -58,7 +58,10 @@ class SesionOut(BaseModel):
     equipo: Optional[EquipoOut] = None
     usuario: Optional[UsuarioOut] = None
     ubicacion: Optional[UbicacionOut] = None
+    ubicacion_custom: Optional[str] = None
     inicio: Optional[datetime] = None
+    completado_at: Optional[datetime] = None
+    es_retoma: bool = False
 
 
 class ScanResult(BaseModel):
@@ -72,7 +75,8 @@ class HistorialOut(BaseModel):
     equipo: EquipoOut
     usuario: Optional[UsuarioOut] = None
     ubicacion: Optional[UbicacionOut] = None
+    ubicacion_custom: Optional[str] = None
     fecha_inicio: datetime
-    fecha_fin: datetime
+    fecha_fin: Optional[datetime] = None  # None indica sesión activa
 
     model_config = {"from_attributes": True}

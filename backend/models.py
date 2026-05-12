@@ -31,6 +31,21 @@ class Usuario(Base):
     codigo = Column(String, unique=True, nullable=False, index=True)
 
 
+class HistorialUso(Base):
+    __tablename__ = "historial_uso"
+    id = Column(Integer, primary_key=True, index=True)
+    equipo_id = Column(Integer, ForeignKey("equipos.id"), nullable=False)
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
+    ubicacion_id = Column(Integer, ForeignKey("ubicaciones.id"), nullable=True)
+    ubicacion_custom = Column(String, nullable=True)
+    fecha_inicio = Column(DateTime, nullable=False)
+    fecha_fin = Column(DateTime, nullable=True)  # None = sesión activa
+
+    equipo = relationship("Equipo")
+    usuario = relationship("Usuario")
+    ubicacion = relationship("Ubicacion")
+
+
 class SesionActiva(Base):
     """Fila única (id=1) que representa el estado actual del scanner."""
     __tablename__ = "sesion_activa"
@@ -39,21 +54,11 @@ class SesionActiva(Base):
     usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
     ubicacion_id = Column(Integer, ForeignKey("ubicaciones.id"), nullable=True)
     inicio = Column(DateTime, nullable=True)
+    completado_at = Column(DateTime, nullable=True)
+    historial_id = Column(Integer, ForeignKey("historial_uso.id"), nullable=True)
+    es_retoma = Column(Integer, nullable=False, default=0)  # 0=False, 1=True (SQLite bool)
+    ubicacion_custom = Column(String, nullable=True)
 
-    equipo = relationship("Equipo")
-    usuario = relationship("Usuario")
-    ubicacion = relationship("Ubicacion")
-
-
-class HistorialUso(Base):
-    __tablename__ = "historial_uso"
-    id = Column(Integer, primary_key=True, index=True)
-    equipo_id = Column(Integer, ForeignKey("equipos.id"), nullable=False)
-    usuario_id = Column(Integer, ForeignKey("usuarios.id"), nullable=True)
-    ubicacion_id = Column(Integer, ForeignKey("ubicaciones.id"), nullable=True)
-    fecha_inicio = Column(DateTime, nullable=False)
-    fecha_fin = Column(DateTime, nullable=False)
-
-    equipo = relationship("Equipo")
-    usuario = relationship("Usuario")
-    ubicacion = relationship("Ubicacion")
+    equipo = relationship("Equipo", foreign_keys=[equipo_id])
+    usuario = relationship("Usuario", foreign_keys=[usuario_id])
+    ubicacion = relationship("Ubicacion", foreign_keys=[ubicacion_id])

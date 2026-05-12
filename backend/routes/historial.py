@@ -11,4 +11,17 @@ router = APIRouter(prefix="/historial", tags=["historial"])
 
 @router.get("/", response_model=List[HistorialOut])
 def listar_historial(db: Session = Depends(get_db)):
-    return db.query(HistorialUso).order_by(HistorialUso.fecha_fin.desc()).limit(200).all()
+    activas = (
+        db.query(HistorialUso)
+        .filter(HistorialUso.fecha_fin.is_(None))
+        .order_by(HistorialUso.fecha_inicio.desc())
+        .all()
+    )
+    completadas = (
+        db.query(HistorialUso)
+        .filter(HistorialUso.fecha_fin.isnot(None))
+        .order_by(HistorialUso.fecha_fin.desc())
+        .limit(200)
+        .all()
+    )
+    return [*activas, *completadas]

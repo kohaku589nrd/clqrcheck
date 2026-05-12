@@ -49,14 +49,14 @@ def eliminar_ubicacion(ubicacion_id: int, db: Session = Depends(get_db)):
     return {"ok": True}
 
 
+@router.get("/master/qr")
+def qr_master():
+    return Response(content=generate_master_qr_bytes(), media_type="image/png")
+
+
 @router.get("/{ubicacion_id}/qr")
 def qr_ubicacion(ubicacion_id: int, db: Session = Depends(get_db)):
     u = db.query(Ubicacion).filter(Ubicacion.id == ubicacion_id).first()
     if not u:
         raise HTTPException(404, "Ubicación no encontrada")
     return Response(content=generate_qr_bytes(build_ubicacion_qr_data(u)), media_type="image/png")
-
-
-@router.get("/master/qr")
-def qr_master():
-    return Response(content=generate_master_qr_bytes(), media_type="image/png")

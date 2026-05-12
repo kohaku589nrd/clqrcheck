@@ -1,0 +1,17 @@
+# Database
+inventory.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+
+# Env
+.env
+.env.local
